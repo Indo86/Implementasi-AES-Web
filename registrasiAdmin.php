@@ -47,7 +47,7 @@ if(isset($_POST["register"])){
     echo "
     <script>
         alert ('Registrasi berhasil! Ayo Login.');
-        document. location.href ='loginA.php';
+        document. location.href ='loginAdmin.php';
     </script>        
     ";
     }
@@ -177,7 +177,7 @@ if(isset($_POST["register"])){
            
             
             <hr class="my-3">
-            <p> sudah punya akun admin? Masuk <a href="loginA.php" class="link-info">di sini</a></p>
+            <p> sudah punya akun admin? Masuk <a href="loginAdmin.php" class="link-info">di sini</a></p>
               </div>
           </div>
         </div>

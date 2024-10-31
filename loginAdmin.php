@@ -16,7 +16,7 @@ if(isset($_POST["loginA"])){
     $_SESSION["loginA"] = true;
     $_SESSION["nip"] = $_POST["nip"];
   
-    header("Location: halamanAdmin.php");
+    header("Location: halamanDataPenduduk.php");
     exit;
   }
   $error = true;
@@ -101,7 +101,7 @@ if(isset($_POST["loginA"])){
             <span class="text-light">Dengan Sepenuh Hati</span>
           </h1>
           <p class="text-light">
-            <h3 class="text-light">Selamat Datang Admin</h3>
+            <h3 class="text-light">Selamat Datang Admin Desa Konoha</h3>
             <p class="text-light">Silakan log in untuk layanan mandiri. 
               Apabila belum mempunyai akun, silakan lakukan registrasi terlebih dahulu.</p>
           </p>
@@ -111,9 +111,6 @@ if(isset($_POST["loginA"])){
         <div class=" card shadow-2-strong" style="border-radius: 1rem;">
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
-              <li class="nav-item">
-                <a class="nav-link" aria-current="true" href="loginP.php">Penduduk</a>
-              </li>
               <li class="nav-item">
                 <a class="nav-link active" >Admin</a>
               </li>
@@ -140,7 +137,7 @@ if(isset($_POST["loginA"])){
             <button class="btn btn-primary btn-lg btn-block d-grip col-12 mx-auto text-center-round" name="loginA">Login</button>
             
             <hr class="my-4">
-            <p>Belum punya akun admin? Registrasi <a href="registerA.php" class="link-info">di sini</a></p>
+            <p>Belum punya akun admin? Registrasi <a href="registrasiAdmin.php" class="link-info">di sini</a></p>
               </div>
           </div>
         </div>

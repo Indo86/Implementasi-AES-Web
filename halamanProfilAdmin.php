@@ -9,12 +9,12 @@ $result = mysqli_query($conn, $queri);
 $data = mysqli_fetch_assoc($result);
 $nikAdmin = $data['nik'];
 
-// if(!isset($_SESSION["loginA"])){
+if(!isset($_SESSION["loginA"])){
 
-//   header("Location: loginA.php");
-//   exit;
+  header("Location: loginAdmin.php");
+  exit;
 
-// }
+}
 
 
 ?>
@@ -44,7 +44,7 @@ $nikAdmin = $data['nik'];
     ?>
     <!-- navbar -->
 <nav class="navbar bg-primary shadow fixed-top">
-  <div class="container-fluid">
+  <div class="container">
   <a class="navbar-brand">
     <img src="img/konoha2.png" alt="Bootstrap" width="50" height="50">
 
@@ -65,17 +65,11 @@ $nikAdmin = $data['nik'];
             <a class="nav-link active" aria-current="page" ><i class="bi bi-person-fill" style="font-size: 20px;"></i> Profil</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pengumumanAdmin.php"><i class="bi bi-newspaper" style="font-size: 20px;"></i> Pengumuman Desa</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="halamanAdmin.php"><i class="bi bi-headset" style="font-size: 20px;"></i> Layanan Mandiri</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link"  href="dataPenduduk.php" aria-current="page"><i class="bi bi bi-people-fill" style="font-size: 20px;"></i> Data Penduduk</a>
+            <a class="nav-link"  href="halamanDataPenduduk.php" aria-current="page"><i class="bi bi bi-people-fill" style="font-size: 20px;"></i> Data Penduduk</a>
           </li>
           
           
-          <a class="mt-5" href="logOutAdmin.php" style="text-decoration:none; " onclick="return confirm('Apakah Anda yakin ingin Log Out?');"> 
+          <a class="mt-5" href="logOut.php" style="text-decoration:none; " onclick="return confirm('Apakah Anda yakin ingin Log Out?');"> 
           <div class="d-grid gap-2 col-10 mx-auto">
           <button class="btn btn-danger text-light" type="button">Log Out</button>
           </div>
@@ -98,7 +92,7 @@ $nikAdmin = $data['nik'];
 <div class="row">
   <div class="col-3">
       <div class="card shadow-sm" style="width: 20rem;">
-      <img src="img/<?= $admin['gambar']; ?>" class="card-img-top" alt="...">
+      <img src="Assets/Img/<?= $admin['gambar']; ?>" class="card-img-top" alt="...">
       <div class="card-body">
       <div class="row">
          <div class="col-4">
@@ -133,7 +127,7 @@ $nikAdmin = $data['nik'];
         <p class="fw-bold ms-3">RT/RW</p>
         <p class="fw-bold ms-3">Kel/Desa</p>
         <p class="fw-bold ms-3">Kecamatan</p>
-        <p class="fw-bold">Setatus Perkawinan</p>
+        <p class="fw-bold">Status Perkawinan</p>
         <p class="fw-bold">Pekerjaan</p>
         <p class="fw-bold">Kewarganegaraan</p>
         <p class="fw-bold">Gol Darah</p>
@@ -147,7 +141,7 @@ $nikAdmin = $data['nik'];
         <p class="fw">: <?= $admin['rtrw']; ?></p>
         <p class="fw">: <?= $admin['keldesa']; ?></p>
         <p class="fw">: <?= $admin['kecamatan']; ?></p>
-        <p class="fw">: <?= $admin['setatus_perkawinan']; ?></p>
+        <p class="fw">: <?= $admin['status_perkawinan']; ?></p>
         <p class="fw">: <?= $admin['pekerjaan']; ?></p>
         <p class="fw">: <?= $admin['kewarganegaraan']; ?></p>
         <p class="fw">: <?= $admin['golD']; ?></p>

@@ -3,13 +3,13 @@
 session_start();
 include("connect.php");
 
-// $nip = $_SESSION["nip"];
-// if(!isset($_SESSION["loginA"])){
+$nip = $_SESSION["nip"];
+if(!isset($_SESSION["loginA"])){
 
-//   header("Location: loginA.php");
-//   exit;
+  header("Location: loginAdmin.php");
+  exit;
 
-// }
+}
 
 
 if(isset($_POST["cari"])){
@@ -54,7 +54,7 @@ overflow-x: hidden;
     ?>
     <!-- navbar -->
 <nav class="navbar bg-primary shadow fixed-top">
-  <div class="container-fluid">
+  <div class="container">
   <a class="navbar-brand">
       <img src="img/konoha2.png" alt="Bootstrap" width="50" height="50">
     </a>
@@ -69,18 +69,12 @@ overflow-x: hidden;
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="profilA.php"><i class="bi bi-person-fill" style="font-size: 20px;"></i> Profil</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="pengumumanAdmin.php"><i class="bi bi-newspaper" style="font-size: 20px;"></i> Pengumuman Desa</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link"  href="halamanAdmin.php" aria-current="page"><i class="bi bi-headset" style="font-size: 20px;"></i> Layanan Mandiri</a>
+            <a class="nav-link" aria-current="page" href="halamanProfilAdmin.php"><i class="bi bi-person-fill" style="font-size: 20px;"></i> Profil</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page"><i class="bi bi bi-people-fill" style="font-size: 20px;"></i> Data Penduduk</a>
           </li>
-          <a class="mt-5" href="logOutAdmin.php" style="text-decoration:none; " onclick="return confirm('Apakah Anda yakin ingin Log Out?');"> 
+          <a class="mt-5" href="logOut.php" style="text-decoration:none; " onclick="return confirm('Apakah Anda yakin ingin Log Out?');"> 
           <div class="d-grid gap-2 col-10 mx-auto">
           <button class="btn btn-danger text-light" type="button">Log Out</button>
           </div>
@@ -130,7 +124,7 @@ overflow-x: hidden;
     <div class="col-4">
 
     <div class="container" style ="margin-top:105px; margin-left:220px;">
-      <a href="tambahPenduduk.php" style="text-decoration:none">
+      <a href="halamanTambahDataPenduduk.php" style="text-decoration:none">
         <button type="button" class="btn btn-outline-primary shadow-sm"><i class="bi bi-person-plus-fill"></i> Tambah Data</button>
         </a>
       </div>
@@ -171,10 +165,10 @@ overflow-x: hidden;
             <td><?= $data['alamat']; ?></td>
             <td><?= $data['pekerjaan']; ?></td>
             <td>
-            <a href="lihatDataP.php?nik=<?=$data['nik']?>" style="text-decoration:none">
+            <a href="halamanLihatDataPenduduk.php?nik=<?=$data['nik']?>" style="text-decoration:none">
             <button type="button" class="btn btn-outline-primary">Lihat</button>
             </a>
-            <a href="editDataP.php?nik=<?=$data['nik']?>" style="text-decoration:none">
+            <a href="halamanEditDataPenduduk.php?nik=<?=$data['nik']?>" style="text-decoration:none">
              <button type="button" class="btn btn-outline-warning">Edit</button>
              </a>
           <?php 
@@ -183,7 +177,7 @@ overflow-x: hidden;
            $cek = mysqli_query($conn, $x);
            if(mysqli_fetch_assoc($cek) === NULL){    
           ?>
-             <a href="hapusDataP.php?nik=<?=$data['nik']?>" style="text-decoration:none" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+             <a href="hapusDataPenduduk.php?nik=<?=$data['nik']?>" style="text-decoration:none" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
              <button type="button" class="btn btn-outline-danger">Hapus</button>
              </a>
           <?php }else{ ?>
