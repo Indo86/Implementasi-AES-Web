@@ -65,7 +65,7 @@ $ivAes = '12345678abcdefgh';;
 $chiperAlgo= 'AES-128-CBC';
 $options = 0;
 
-    $nama = openssl_encrypt($_POST['nama'],'AES-128-CBC', $keyAes, 0, $ivAes );
+    $nama = openssl_encrypt($_POST['nama'],$chiperAlgo, $keyAes, 0, $ivAes );
     $ttl = openssl_encrypt($_POST['ttl'],$chiperAlgo, $keyAes, $options, $ivAes );
     $jenis_kelamin = openssl_encrypt($_POST['jenis_kelamin'], $chiperAlgo, $keyAes, $options, $ivAes );
     $alamat = openssl_encrypt($_POST['alamat'],  $chiperAlgo, $keyAes, $options, $ivAes );

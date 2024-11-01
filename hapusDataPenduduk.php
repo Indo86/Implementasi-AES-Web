@@ -10,9 +10,10 @@ if(!isset($_SESSION["loginA"])){
 
 }
 
-$admin = "DELETE FROM admin WHERE nik = $nik";
+// echo $nik;
+$admin = "DELETE FROM admin WHERE hash_nik = '$nik'";
 mysqli_query($conn, $admin);
-$penduduk = "DELETE FROM penduduk WHERE hash_nik = $nik";
+$penduduk = "DELETE FROM penduduk WHERE hash_nik = '$nik'";
 mysqli_query($conn, $penduduk);
 
 

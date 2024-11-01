@@ -2,7 +2,7 @@
 session_start(); 
 include('connect.php');
 
-$nik = $_GET['nik'];
+$nip = $_GET['nip'];
 if(!isset($_SESSION["loginA"])){
 
   header("Location: loginAdmin.php");
@@ -10,12 +10,9 @@ if(!isset($_SESSION["loginA"])){
 
 }
 
-$admin = "DELETE FROM admin WHERE nik = $nik";
+$admin = "DELETE FROM admin WHERE hash_nip = '$nip'";
 mysqli_query($conn, $admin);
-$penduduk = "DELETE FROM penduduk WHERE hash_nik = $nik";
-mysqli_query($conn, $penduduk);
 
-
-header('Location: halamanDataPenduduk.php')
+header('Location: halamanDataAdmin.php');
 
 ?>

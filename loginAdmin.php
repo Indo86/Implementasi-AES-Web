@@ -4,11 +4,15 @@ include("connect.php");
 
 // login admin
 if(isset($_POST["loginA"])){
+  $keyAes = 'makanmakanmakanp';
+  $ivAes = '12345678abcdefgh';;
+  $chiperAlgo= 'AES-128-CBC';
+  $options = 0;
 
-  $nip = $_POST["nip"];
-  $password = $_POST["password"];
+  $nip = hash('sha256', $_POST["nip"]);
+  $password = openssl_encrypt($_POST["password"], $chiperAlgo, $keyAes, $options, $ivAes);
 
-  $queri = "SELECT * FROM admin WHERE nip = '$nip' AND password = '$password'";
+  $queri = "SELECT * FROM admin WHERE hash_nip = '$nip' AND password = '$password'";
   $result = mysqli_query($conn, $queri);
 
   if(mysqli_num_rows($result) > 0){

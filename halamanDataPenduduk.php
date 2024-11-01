@@ -3,7 +3,8 @@
 session_start();
 include("connect.php");
 
-$nip = $_SESSION["nip"];
+$nip = hash('sha256',  $_SESSION["nip"]);
+
 if(!isset($_SESSION["loginA"])){
 
   header("Location: loginAdmin.php");
@@ -51,7 +52,7 @@ overflow-x: hidden;
   </style>
   <body>
     <?php 
-    $queri = "SELECT * FROM admin WHERE nip = '$nip'";
+    $queri = "SELECT * FROM admin WHERE hash_nip = '$nip'";
     $result = mysqli_query($conn, $queri);
     $admin = mysqli_fetch_assoc($result);
     ?>
@@ -66,7 +67,7 @@ overflow-x: hidden;
     </button>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Halo, admin <?= $admin['nama']; ?></h5>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Halo, admin <?= openssl_decrypt($admin['nama'], $chiperAlgo, $keyAes, $options, $ivAes); ?></h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
@@ -177,8 +178,9 @@ overflow-x: hidden;
             <a href="halamanEditDataPenduduk.php?nik=<?=hash('sha256', openssl_decrypt( $data['nik'],$chiperAlgo, $keyAes, $options,$ivAes ))?>" style="text-decoration:none">
              <button type="button" class="btn btn-outline-warning">Edit</button>
              </a>
+             
           <?php 
-           $nik_cek = openssl_decrypt( $data['nik'],$chiperAlgo, $keyAes, $options,$ivAes );
+           $nik_cek = $data['nik'];
            $x = "SELECT * FROM penduduk JOIN admin ON penduduk.nik = admin.nik WHERE penduduk.nik = '$nik_cek'";
            $cek = mysqli_query($conn, $x);
            if(mysqli_fetch_assoc($cek) === NULL){    

@@ -3,7 +3,8 @@
 session_start();
 include("connect.php");
 
-$nip = $_SESSION["nip"];
+$nip = hash('sha256',  $_SESSION["nip"]);
+
 if(!isset($_SESSION["loginA"])){
 
   header("Location: loginAdmin.php");
@@ -51,7 +52,7 @@ overflow-x: hidden;
   </style>
   <body>
     <?php 
-    $queri = "SELECT * FROM admin WHERE nip = '$nip'";
+    $queri = "SELECT * FROM admin WHERE hash_nip = '$nip'";
     $result = mysqli_query($conn, $queri);
     $admin = mysqli_fetch_assoc($result);
     ?>
@@ -66,13 +67,13 @@ overflow-x: hidden;
     </button>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Halo, admin <?= $admin['nama']; ?></h5>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Halo, admin <?= openssl_decrypt($admin['nama'], $chiperAlgo, $keyAes, $options, $ivAes); ?></h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="halamanProfilAdmin.php"><i class="bi bi-person-fill" style="font-size: 20px;"></i> Profil</a>
+            <a class="nav-link" aria-current="page" href="halamanProfilAdmin.php"><i class="bi bi-person-vcard" style="font-size: 20px;"></i>  Profil</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="halamanDataPenduduk.php"><i class="bi bi bi-people-fill" style="font-size: 20px;"></i> Data Penduduk</a>
@@ -179,11 +180,11 @@ overflow-x: hidden;
              </a>
           <?php 
            $nik_cek = openssl_decrypt( $admin['nik'],$chiperAlgo, $keyAes, $options,$ivAes );
-           $x = "SELECT * FROM penduduk JOIN admin ON penduduk.nik = admin.nik WHERE penduduk.nik = '$nik_cek'";
+           $x = "SELECT * FROM  admin WHERE hash_nip = '$nip'";
            $cek = mysqli_query($conn, $x);
            if(mysqli_fetch_assoc($cek) === NULL){    
           ?>
-             <a href="hapusDataPenduduk.php?nik=<?= hash('sha256', openssl_decrypt( $admin['nik'],$chiperAlgo, $keyAes, $options,$ivAes ))?>" style="text-decoration:none" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+             <a href="hapusDataAdmin.php?nip=<?= hash('sha256', openssl_decrypt( $admin['nip'],$chiperAlgo, $keyAes, $options,$ivAes ))?>" style="text-decoration:none" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
              <button type="button" class="btn btn-outline-danger">Hapus</button>
              </a>
           <?php }else{ ?>

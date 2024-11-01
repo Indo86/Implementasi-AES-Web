@@ -4,7 +4,8 @@ session_start();
 include("connect.php");
 
 $nik = $_GET['nik'];
-$nip = $_SESSION['nip'];
+$nip = hash('sha256', $_SESSION['nip']);
+
 if(!isset($_SESSION["loginA"])){
 
   header("Location: loginAdmin.php");
@@ -56,7 +57,7 @@ $options = 0;
 
 if( $pendudukAdmin !== NULL && $pendudukAdmin['password'] !== '' ){
 
-  $query_admin = "SELECT * FROM admin WHERE nik = '$nik'";
+  $query_admin = "SELECT * FROM admin WHERE hash_nip = '$nip'";
   $admin = mysqli_fetch_assoc(mysqli_query($conn, $query_admin));
   $p = 1;
 
@@ -96,12 +97,10 @@ if( $pendudukAdmin !== NULL && $pendudukAdmin['password'] !== '' ){
                         <div class="col-4">
                                 <p class="fw-bold">NIP</p>
                                 <p class="fw-bold">Jabatan</p>
-                                <p class="fw-bold">Password</p>
                               </div>
                               <div class="col-8">
-                                <p class="fw">: <?= $admin['nip']; ?></p>
-                                <p class="fw">: <?= $admin['jabatan']; ?></p>
-                                <p class="fw">: <?= $admin['password']; ?></p>
+                                <p class="fw">: <?=  openssl_decrypt(  $admin['nip'],$chiperAlgo, $keyAes, $options,$ivAes )?></p>
+                                <p class="fw">: <?= openssl_decrypt(  $admin['jabatan']  ,$chiperAlgo, $keyAes, $options,$ivAes )?></p>
                               </div>
                           
                         <?php } else if( $p === 0){ ?>

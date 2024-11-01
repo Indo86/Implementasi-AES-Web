@@ -3,8 +3,8 @@
 session_start();
 include("connect.php");
 
-$nip = $_SESSION["nip"];
-$queri = "SELECT * FROM admin WHERE nip = '$nip'";
+$nip = hash('sha256',  $_SESSION["nip"]);
+$queri = "SELECT * FROM admin WHERE hash_nip = '$nip'";
 $result = mysqli_query($conn, $queri);
 $data = mysqli_fetch_assoc($result);
 $nikAdmin = $data['nik'];
@@ -16,6 +16,10 @@ if(!isset($_SESSION["loginA"])){
 
 }
 
+$keyAes = 'makanmakanmakanp';
+$ivAes = '12345678abcdefgh';;
+$chiperAlgo= 'AES-128-CBC';
+$options = 0;
 
 ?>
 
@@ -37,7 +41,7 @@ if(!isset($_SESSION["loginA"])){
   </style>
   <body>
   <?php 
-    $queri = "SELECT * FROM admin WHERE nip = '$nip'";
+    $queri = "SELECT * FROM admin WHERE hash_nip = '$nip'";
     $result = mysqli_query($conn, $queri);
     $admin = mysqli_fetch_assoc($result);
     
@@ -56,18 +60,20 @@ if(!isset($_SESSION["loginA"])){
     </button>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Halo, admin <?= $admin['nama']; ?></h5>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Halo, admin <?= openssl_decrypt($admin['nama'], $chiperAlgo, $keyAes, $options, $ivAes); ?></h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" ><i class="bi bi-person-fill" style="font-size: 20px;"></i> Profil</a>
+            <a class="nav-link active" aria-current="page" ><i class="bi bi-person-vcard" style="font-size: 20px;"></i>  Profil</a>
           </li>
           <li class="nav-item">
             <a class="nav-link"  href="halamanDataPenduduk.php" aria-current="page"><i class="bi bi bi-people-fill" style="font-size: 20px;"></i> Data Penduduk</a>
           </li>
-          
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="halamanDataAdmin.php"  ><i class="bi bi-journal-text" style="font-size: 20px;"></i> Data Admin Desa</a>
+          </li>
           
           <a class="mt-5" href="logOut.php" style="text-decoration:none; " onclick="return confirm('Apakah Anda yakin ingin Log Out?');"> 
           <div class="d-grid gap-2 col-10 mx-auto">
@@ -83,7 +89,7 @@ if(!isset($_SESSION["loginA"])){
 <br><br><br>
     <!-- Akhir Navbar -->
 <?php 
-  $queri = "SELECT * FROM admin INNER JOIN penduduk ON admin.nik = penduduk.nik WHERE nip = '$nip'";
+  $queri = "SELECT * FROM admin INNER JOIN penduduk ON admin.nik = penduduk.nik WHERE hash_nip = '$nip'";
   $result = mysqli_query($conn, $queri);
   $admin = mysqli_fetch_assoc($result);
 ?>
@@ -92,7 +98,7 @@ if(!isset($_SESSION["loginA"])){
 <div class="row">
   <div class="col-3">
       <div class="card shadow-sm" style="width: 20rem;">
-      <img src="Assets/Img/<?= openssl_decrypt(  $data['gambar'],$chiperAlgo, $keyAes, $options,$ivAes )  ?>" class="card-img-top" alt="...">
+      <img src="Assets/Img/<?= openssl_decrypt($admin['gambar'],$chiperAlgo, $keyAes, $options,$ivAes )  ?>" class="card-img-top" alt="...">
       <div class="card-body">
       <div class="row">
          <div class="col-4">
@@ -100,8 +106,8 @@ if(!isset($_SESSION["loginA"])){
             <p class="fw-bold">Jabatan</p>
           </div>
           <div class="col-8">
-            <p class="fw">: <?= $admin['nip']; ?></p>
-            <p class="fw">: <?= $admin['jabatan']; ?></p>
+            <p class="fw">: <?= openssl_decrypt(  $admin['nip'],$chiperAlgo, $keyAes, $options,$ivAes )  ?></p>
+            <p class="fw">: <?= openssl_decrypt(  $admin['jabatan'],$chiperAlgo, $keyAes, $options,$ivAes )   ?></p>
           </div>
 
 
