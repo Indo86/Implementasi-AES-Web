@@ -9,6 +9,7 @@ if(!isset($_SESSION["loginA"])){
 
 }
 
+
 if(isset($_POST["submit"])){
 function upload(){
   $namaFile = $_FILES['gambar']['name'];
@@ -51,24 +52,25 @@ function upload(){
 
   return $namaFileBaru;
 }
-
-
-
-    $nik = $_POST['nik'];
-    $nama = $_POST['nama'];
-    $ttl = $_POST['ttl'];
-    $jenis_kelamin = $_POST['jenis_kelamin'];
-    $alamat = $_POST['alamat'];
-    $rtw = $_POST['rt/rw'];
-    $kelDes = $_POST['kel/desa'];
-    $kecamatan = $_POST['kecamatan'];
-    $status_perkawinan = $_POST['status_perkawinan'];
-    $pekerjaan = $_POST['pekerjaan'];
-    $kewarganegaraan = $_POST['kewarganegaraan'];
-    $golD = $_POST['golD'];
-    $gambar = upload();
-
-
+$keyAes = 'makanmakanmakanp';
+$ivAes = '12345678abcdefgh';;
+$chiperAlgo= 'AES-128-CBC';
+$options = 0;
+    $nik = openssl_encrypt($_POST['nik'], $chiperAlgo, $keyAes, $options, $ivAes);
+    $nama = openssl_encrypt($_POST['nama'],$chiperAlgo, $keyAes, $options, $ivAes );
+    $ttl = openssl_encrypt($_POST['ttl'],$chiperAlgo, $keyAes, $options, $ivAes );
+    $jenis_kelamin = openssl_encrypt($_POST['jenis_kelamin'], $chiperAlgo, $keyAes, $options, $ivAes );
+    $alamat = openssl_encrypt($_POST['alamat'],  $chiperAlgo, $keyAes, $options, $ivAes );
+    $rtw = openssl_encrypt($_POST['rt/rw'], $chiperAlgo, $keyAes, $options, $ivAes );
+    $kelDes = openssl_encrypt($_POST['kel/desa'],  $chiperAlgo, $keyAes, $options, $ivAes );
+    $kecamatan = openssl_encrypt( $_POST['kecamatan'], $chiperAlgo, $keyAes, $options, $ivAes);
+    $status_perkawinan = openssl_encrypt($_POST['status_perkawinan'], $chiperAlgo, $keyAes, $options, $ivAes );
+    $pekerjaan = openssl_encrypt($_POST['pekerjaan'],  $chiperAlgo, $keyAes, $options, $ivAes );
+    $kewarganegaraan = openssl_encrypt($_POST['kewarganegaraan'], $chiperAlgo, $keyAes, $options, $ivAes);
+    $golD = openssl_encrypt($_POST['golD'],  $chiperAlgo, $keyAes, $options, $ivAes );
+    $gambar =  openssl_encrypt(upload(),$chiperAlgo, $keyAes, $options, $ivAes );
+    $hash_nik = hash('sha256', $_POST['nik']);
+   
 
 
 
@@ -78,7 +80,7 @@ VALUES
 ('$nik', '$nama', '$ttl', '$jenis_kelamin',
 '$alamat', '$rtw', '$kelDes', '$kecamatan',
 '$status_perkawinan', '$pekerjaan',
-'$kewarganegaraan', '$golD', '$gambar')";
+'$kewarganegaraan', '$golD', '$gambar', '$hash_nik')";
 
 mysqli_query($conn, $query);
 

@@ -19,6 +19,10 @@ function upload(){
   $error = $_FILES['gambar']['error'];
   $tmpName = $_FILES['gambar']['tmp_name'];
   
+$keyAes = 'makanmakanmakanp';
+$ivAes = '12345678abcdefgh';;
+$chiperAlgo= 'AES-128-CBC';
+$options = 0;
  
   // mengecek apakah yang diupload itu adalah gambar
   $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
@@ -35,7 +39,7 @@ function upload(){
     ";
     return false;
   }
-
+ 
   // cek ukuran file
   if($ukuranFile > 1000000){
     echo "
@@ -53,23 +57,26 @@ function upload(){
 
   move_uploaded_file($tmpName, 'Assets/Img/'.$namaFileBaru);
 
-  return $namaFileBaru;
+  return  openssl_encrypt($namaFileBaru, $chiperAlgo, $keyAes, $options, $ivAes );
 }
 
+$keyAes = 'makanmakanmakanp';
+$ivAes = '12345678abcdefgh';;
+$chiperAlgo= 'AES-128-CBC';
+$options = 0;
 
-
-    $nama = $_POST['nama'];
-    $ttl = $_POST['ttl'];
-    $jenis_kelamin = $_POST['jenis_kelamin'];
-    $alamat = $_POST['alamat'];
-    $rtw = $_POST['rt/rw'];
-    $kelDes = $_POST['kel/desa'];
-    $kecamatan = $_POST['kecamatan'];
-    $status_perkawinan = $_POST['status_perkawinan'];
-    $pekerjaan = $_POST['pekerjaan'];
-    $kewarganegaraan = $_POST['kewarganegaraan'];
-    $golD = $_POST['golD'];
-    $gambar = upload();
+    $nama = openssl_encrypt($_POST['nama'],'AES-128-CBC', $keyAes, 0, $ivAes );
+    $ttl = openssl_encrypt($_POST['ttl'],$chiperAlgo, $keyAes, $options, $ivAes );
+    $jenis_kelamin = openssl_encrypt($_POST['jenis_kelamin'], $chiperAlgo, $keyAes, $options, $ivAes );
+    $alamat = openssl_encrypt($_POST['alamat'],  $chiperAlgo, $keyAes, $options, $ivAes );
+    $rtw = openssl_encrypt($_POST['rt/rw'], $chiperAlgo, $keyAes, $options, $ivAes );
+    $kelDes = openssl_encrypt($_POST['kel/desa'],  $chiperAlgo, $keyAes, $options, $ivAes );
+    $kecamatan = openssl_encrypt( $_POST['kecamatan'], $chiperAlgo, $keyAes, $options, $ivAes);
+    $status_perkawinan = openssl_encrypt($_POST['status_perkawinan'], $chiperAlgo, $keyAes, $options, $ivAes );
+    $pekerjaan = openssl_encrypt($_POST['pekerjaan'],  $chiperAlgo, $keyAes, $options, $ivAes );
+    $kewarganegaraan = openssl_encrypt($_POST['kewarganegaraan'], $chiperAlgo, $keyAes, $options, $ivAes);
+    $golD = openssl_encrypt($_POST['golD'],  $chiperAlgo, $keyAes, $options, $ivAes );
+    $gambar =  upload();
 
 
 
@@ -88,7 +95,7 @@ status_perkawinan = '$status_perkawinan',
 pekerjaan = '$pekerjaan',
 kewarganegaraan = '$kewarganegaraan', 
 golD = '$golD',
-gambar = '$gambar' WHERE nik = '$nik'";
+gambar = '$gambar' WHERE hash_nik = '$nik'";
 
 mysqli_query($conn, $query);
 
@@ -143,9 +150,17 @@ header('Location: HalamanDataPenduduk.php');
 <!-- Akhir Judul -->
 <!-- form Permohonan -->
 <?php 
-$query = "SELECT * FROM penduduk WHERE nik = '$nik'";
+$keyAes = 'makanmakanmakanp';
+$ivAes = '12345678abcdefgh';;
+$chiperAlgo= 'AES-128-CBC';
+$options = 0;
+
+$query = "SELECT * FROM penduduk WHERE hash_nik = '$nik'";
 $result = mysqli_query($conn, $query);
+
 $datum = mysqli_fetch_assoc($result);
+// echo $datum['nama'];
+// echo openssl_decrypt( $datum["nik"],$chiperAlgo,$keyAes, $options, $ivAes);
 ?>
 <div class="container mt-2 mb-3">
     <div class="card shadow-sm">
@@ -154,29 +169,29 @@ $datum = mysqli_fetch_assoc($result);
   <div class="mb-3 row">
     <label for="nik" class="col-sm-2 col-form-label">NIK</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" readonly id="nik" name="nik" value="<?= $datum["nik"]?>">
+      <input type="text" class="form-control" readonly id="nik" name="nik" value="<?= openssl_decrypt( $datum["nik"],$chiperAlgo,$keyAes, $options, $ivAes)?>">
     </div>
   </div>
 
   <div class="mb-3 row">
     <label for="nama" class="col-sm-2 col-form-label">Nama</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" id="nama" name="nama" value="<?= $datum["nama"]?>">
+      <input type="text" class="form-control" id="nama" name="nama" value="<?= openssl_decrypt($datum['nama'],$chiperAlgo, $keyAes, $options,$ivAes )?>">
     </div>
   </div>
 
   <div class="mb-3 row">
     <label for="ttl" class="col-sm-2 col-form-label">Tempat/Tanggal Lahir</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" id="ttl" name="ttl" value="<?= $datum["ttl"]?>">
+      <input type="text" class="form-control" id="ttl" name="ttl" value="<?=  openssl_decrypt( $datum["ttl"] ,$chiperAlgo,$keyAes, $options, $ivAes)?>">
     </div>
   </div>
 
   <div class="mb-3 row">
     <label for="jenis_kelamin" class="col-sm-2 col-form-label">Jenis Kelamin</label>
     <div class="col-sm-10">
-    <select class="form-select" aria-label="Default select example" name="jenis_kelamin" value="<?= $datum["jenis_kelamin"]?>">
-          <option value="<?= $datum["jenis_kelamin"]?>"><?= $datum["jenis_kelamin"]?></option>
+    <select class="form-select" aria-label="Default select example" name="jenis_kelamin" value="<?=  openssl_decrypt( $datum["jenis_kelamin"]  ,$chiperAlgo,$keyAes, $options, $ivAes) ?>">
+         <option value="<?= openssl_decrypt( $datum["jenis_kelamin"]  ,$chiperAlgo,$keyAes, $options, $ivAes)?>"><?= openssl_decrypt( $datum["jenis_kelamin"], $chiperAlgo ,$keyAes, $options, $ivAes)?></option>
           <option value="Laki-laki">Laki-laki</option>
           <option value="Perempuan">Perempuan</option>
       </select>
@@ -186,8 +201,8 @@ $datum = mysqli_fetch_assoc($result);
   <div class="mb-3 row">
   <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
     <div class="col-sm-10">
-      <select class="form-select" aria-label="Default select example" name="alamat" value="<?= $datum["alamat"]?>">
-          <option value="<?= $datum["alamat"]?>" selected><?= $datum["alamat"]?></option>
+      <select class="form-select" aria-label="Default select example" name="alamat" value="<?= openssl_decrypt($datum["alamat"] , $chiperAlgo,$keyAes, $options, $ivAes)?>">
+          <option value="<?= openssl_decrypt($datum["alamat"],$chiperAlgo ,$keyAes, $options, $ivAes)?>" selected><?= openssl_decrypt($datum["alamat"],$chiperAlgo ,$keyAes, $options, $ivAes) ?></option>
           <option value="Depok">Depok</option>
           <option value="Sayangan">Sayangan</option>
           <option value="Semondo">Semondo</option>
@@ -199,8 +214,8 @@ $datum = mysqli_fetch_assoc($result);
   <div class="mb-3 row">
   <label for="kel/desa" class="col-sm-2 col-form-label">Kel/Desa</label>
     <div class="col-sm-10">
-      <select class="form-select" aria-label="Default select example" name="kel/desa" value="<?= $datum["keldesa"]?>">
-          <option value="<?= $datum["keldesa"]?>" selected><?= $datum["keldesa"]?></option>
+      <select class="form-select" aria-label="Default select example" name="kel/desa" value="<?= openssl_decrypt($datum["keldesa"],$chiperAlgo,$keyAes, $options, $ivAes) ?>">
+          <option value="<?=  openssl_decrypt($datum["keldesa"], $chiperAlgo,$keyAes, $options, $ivAes)?>" selected><?=  openssl_decrypt($datum["keldesa"],$chiperAlgo,$keyAes, $options, $ivAes)?></option>
           <option value="Konoha">Konoha</option>
       </select>
     </div>
@@ -210,7 +225,7 @@ $datum = mysqli_fetch_assoc($result);
     <label for="keterangan" class="col-sm-2 col-form-label">RT/RW</label>
     <div class="col-sm-10">
     <select class="form-select" aria-label="Default select example" name="rt/rw"  >
-          <option value="<?= $datum["rtrw"]?>" selected><?= $datum["rtrw"]?></option>
+          <option value="<?= openssl_decrypt($datum["rtrw"],$chiperAlgo,$keyAes, $options, $ivAes)?>" selected><?= openssl_decrypt($datum["rtrw"],$chiperAlgo,$keyAes, $options, $ivAes)?></option>
           <option value="09/02">09/02</option>
           <option value="08/03">08/03</option>
           <option value="07/04">07/04</option>
@@ -224,7 +239,7 @@ $datum = mysqli_fetch_assoc($result);
     <label for="kecamatan" class="col-sm-2 col-form-label">Kecamatan</label>
     <div class="col-sm-10">
     <select class="form-select" aria-label="Default select example" name="kecamatan"  >
-          <option value="<?= $datum["kecamatan"]?>" selected><?= $datum["kecamatan"]?></option>
+          <option value="<?= openssl_decrypt($datum["kecamatan"],$chiperAlgo,$keyAes, $options, $ivAes)?>" selected><?= openssl_decrypt($datum["kecamatan"],$chiperAlgo,$keyAes, $options, $ivAes)?></option>
           <option value="Konoha">Konoha</option>
           <option value="Suna">Suna</option>
           <option value="Bulu">Bulu</option>
@@ -238,7 +253,7 @@ $datum = mysqli_fetch_assoc($result);
     <label for="status_perkawinan" class="col-sm-2 col-form-label">Status Perkawinan</label>
     <div class="col-sm-10">
     <select class="form-select" aria-label="Default select example" name="status_perkawinan" >
-          <option  value="<?= $datum["status_perkawinan"]?>" selected><?= $datum["status_perkawinan"]?></option>
+          <option  value="<?=  openssl_decrypt($datum["status_perkawinan"],$chiperAlgo,$keyAes, $options, $ivAes)?>" selected><?= openssl_decrypt($datum["status_perkawinan"],$chiperAlgo,$keyAes, $options, $ivAes)?></option>
           <option value="Belum Kawin">Belum Kawin</option>
           <option value="Kawin">Kawin</option>
           <option value="Cerai Hidup">Cerai Hidup</option>
@@ -250,15 +265,15 @@ $datum = mysqli_fetch_assoc($result);
   <div class="mb-3 row">
     <label for="pekerjaan" class="col-sm-2 col-form-label">Pekerjaan</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" id="pekerjaan" name="pekerjaan"  value="<?= $datum["pekerjaan"]?>">
+      <input type="text" class="form-control" id="pekerjaan" name="pekerjaan"  value="<?=  openssl_decrypt($datum["pekerjaan"],$chiperAlgo,$keyAes, $options, $ivAes)?>">
     </div>
   </div>
 
   <div class="mb-3 row">
     <label for="kewarganegaraan" class="col-sm-2 col-form-label">Kewarganegaraan</label>
     <div class="col-sm-10">
-    <select class="form-select" aria-label="Default select example" name="kewarganegaraan"  value="<?= $datum["kewarganegaraan"]?>">
-          <option value="<?= $datum["kewarganegaraan"]?>" selected><?= $datum["kewarganegaraan"]?></option>
+    <select class="form-select" aria-label="Default select example" name="kewarganegaraan"  value="<?= openssl_decrypt($datum["kewarganegaraan"],$chiperAlgo ,$keyAes, $options, $ivAes)?>">
+          <option value="<?= openssl_decrypt($datum["kewarganegaraan"],$chiperAlgo ,$keyAes, $options, $ivAes)  ?>" selected><?= openssl_decrypt($datum["kewarganegaraan"],$chiperAlgo ,$keyAes, $options, $ivAes)?></option>
           <option value="WNI">WNI</option>
           <option value="WNA">WNA</option>
       </select>
@@ -268,8 +283,8 @@ $datum = mysqli_fetch_assoc($result);
   <div class="mb-3 row">
     <label for="golD" class="col-sm-2 col-form-label">Golongan Darah</label>
     <div class="col-sm-10">
-    <select class="form-select" aria-label="Default select example" name="golD"  value="<?= $datum["golD"]?>">
-          <option value="<?= $datum["golD"]?>"s><?= $datum["golD"]?></option>
+    <select class="form-select" aria-label="Default select example" name="golD"  value="<?=  openssl_decrypt($datum["golD"],$chiperAlgo ,$keyAes, $options, $ivAes) ?>"s><?= openssl_decrypt($datum["golD"],$chiperAlgo ,$keyAes, $options, $ivAes) ?>?>">
+          <option value="<?=  openssl_decrypt($datum["golD"],$chiperAlgo ,$keyAes, $options, $ivAes) ?>"><?= openssl_decrypt($datum["golD"],$chiperAlgo ,$keyAes, $options, $ivAes) ?></option>
           <option value="A">A</option>
           <option value="B">B</option>
           <option value="O">O</option>
@@ -281,7 +296,7 @@ $datum = mysqli_fetch_assoc($result);
   <div class="mb-3 row">
   <label for="gambar" class=" col-sm-2 form-label">Foto</label>
   <div class="col-sm-10">
-     <input class="form-control" type="file" id="gambar" name="gambar" value="<?= $datum["gambar"]?>" required> 
+     <input class="form-control" type="file" id="gambar" name="gambar" value="<?= openssl_decrypt($datum["gambar"] , $chiperAlgo ,$keyAes, $options, $ivAes) ?>">
     </div>
   
   </div>

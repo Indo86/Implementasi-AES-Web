@@ -79,7 +79,7 @@ if( $pendudukAdmin !== NULL && $pendudukAdmin['password'] !== '' ){
 
 <div class="container mt-4 me-5">
   <div class="row mb-3">
-        <a href="HalamanDataPenduduk.php">
+        <a href="HalamanDataAdmin.php">
         <button type="button" class="btn btn-outline-primary content-start"><i class="bi bi-arrow-left"></i> Kembali</button>
         </a>
   </div>
@@ -99,29 +99,18 @@ if( $pendudukAdmin !== NULL && $pendudukAdmin['password'] !== '' ){
                                 <p class="fw-bold">Password</p>
                               </div>
                               <div class="col-8">
-                                <p class="fw">: <?= $admin['nip']; ?></p>
-                                <p class="fw">: <?= $admin['jabatan']; ?></p>
-                                <p class="fw">: <?= $admin['password']; ?></p>
+                                <p class="fw">: <?= openssl_decrypt(  $pendudukAdmin['nip'],$chiperAlgo, $keyAes, $options,$ivAes )  ?></p>
+                                <p class="fw">: <?= openssl_decrypt(  $pendudukAdmin['jabatan'],$chiperAlgo, $keyAes, $options,$ivAes ) ?></p>
+                                <p class="fw">: <?= openssl_decrypt(   $pendudukAdmin['password'],$chiperAlgo, $keyAes, $options,$ivAes ) ?></p>
                               </div>
                           
-                        <?php } else if( $p === 0){ ?>
-                         
-                           <div class="col-4">
-                                <p class="fw-bold">NIK</p>
-                                <p class="fw-bold">Password</p>
-                              </div>
-                              <div class="col-8">
-                                <p class="fw">: <?= $user['nik']; ?></p>
-                                <p class="fw">: <?= $user['password']; ?></p>
-                              </div>
-                          <?php } else if( $p === 3){ ?>
+                        <?php } else if( $p === 3){ ?>
 
                             <p><?= $admin['nama']; ?> belum mempunyai akun admin.
 
                           <?php } else{ ?>
                             
                             <p><?=  openssl_decrypt(  $data['nama'],$chiperAlgo, $keyAes, $options,$ivAes )  ?> belum punya akun.</p>
-                           
                                 
                             <?php } ?>
                  

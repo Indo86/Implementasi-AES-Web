@@ -72,13 +72,13 @@ overflow-x: hidden;
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="halamanProfilAdmin.php"><i class="bi bi-person-vcard" style="font-size: 20px;"></i> Profil</a>
+            <a class="nav-link" aria-current="page" href="halamanProfilAdmin.php"><i class="bi bi-person-fill" style="font-size: 20px;"></i> Profil</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page"><i class="bi bi bi-people-fill" style="font-size: 20px;"> </i> Data Penduduk</a>
+            <a class="nav-link" aria-current="page" href="halamanDataPenduduk.php"><i class="bi bi bi-people-fill" style="font-size: 20px;"></i> Data Penduduk</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page"  href="halamanDataAdmin.php"><i class="bi bi-journal-text" style="font-size: 20px;"></i></i> Data Admin Desa</a>
+            <a class="nav-link active" aria-current="page"  ><i class="bi bi-journal-text" style="font-size: 20px;"></i> Data Admin Desa</a>
           </li>
           <a class="mt-5" href="logOut.php" style="text-decoration:none; " onclick="return confirm('Apakah Anda yakin ingin Log Out?');"> 
           <div class="d-grid gap-2 col-10 mx-auto">
@@ -93,7 +93,7 @@ overflow-x: hidden;
     <!-- Akhir Navbar -->
     <figure class="text-center mt-4" style="padding-top: 5rem;">
     <blockquote class="blockquote">
-    <p class="fw-bold g-2">Data Penduduk Desa Konoha</p>
+    <p class="fw-bold g-2">Data Admin Desa Konoha</p>
   </blockquote>
   <figcaption class="blockquote-footer">
     Kami melayani dengan spenuh hati 
@@ -130,7 +130,7 @@ overflow-x: hidden;
     <div class="col-4">
 
     <div class="container" style ="margin-top:105px; margin-left:220px;">
-      <a href="halamanTambahDataPenduduk.php" style="text-decoration:none">
+      <a href="halamanTambahDataAdmin.php" style="text-decoration:none">
         <button type="button" class="btn btn-outline-primary shadow-sm"><i class="bi bi-person-plus-fill"></i> Tambah Data</button>
         </a>
       </div>
@@ -149,41 +149,41 @@ overflow-x: hidden;
         <thead class="table-primary">
           <tr>
             <th scope="col">No</th>
+            <th scope="col">NIP</th>
             <th scope="col">NIK</th>
             <th scope="col">Nama</th>
-            <th scope="col">Jenis Kelamin</th>
-            <th scope="col">Alamat</th>
-            <th scope="col">Pekerjaan</th>
+            <th scope="col">Jabatan</th>
             <th scope="col">Detail</th>
           </tr>
         </thead>
         <tbody>
         <?php 
         $i = 1;
-        $result = mysqli_query($conn, $query);
-        while($data = mysqli_fetch_assoc($result)){
+        $queri = "SELECT * FROM admin";
+        $result = mysqli_query($conn, $queri);
+
+        while($admin = mysqli_fetch_assoc($result)){
         ?>
           <tr>
             <th scope="row"><?= $i++; ?></th>
-            <td><?= openssl_decrypt( $data['nik'],$chiperAlgo, $keyAes, $options,$ivAes )  ?></td>
-            <td><?= openssl_decrypt($data['nama'],$chiperAlgo, $keyAes, $options,$ivAes )?></td>
-            <td><?= openssl_decrypt($data['jenis_kelamin'],$chiperAlgo, $keyAes, $options,$ivAes ) ?></td>
-            <td><?= openssl_decrypt($data['alamat'],$chiperAlgo, $keyAes, $options,$ivAes ) ?></td>
-            <td><?= openssl_decrypt($data['pekerjaan'],$chiperAlgo, $keyAes, $options,$ivAes ) ?></td>
+            <td><?= openssl_decrypt( $admin['nip'],$chiperAlgo, $keyAes, $options,$ivAes )  ?></td>
+            <td><?= openssl_decrypt( $admin['nik'],$chiperAlgo, $keyAes, $options,$ivAes )  ?></td>
+            <td><?= openssl_decrypt($admin['nama'],$chiperAlgo, $keyAes, $options,$ivAes )?></td>
+            <td><?= openssl_decrypt($admin['jabatan'],$chiperAlgo, $keyAes, $options,$ivAes ) ?></td>
             <td>
-            <a href="halamanLihatDataPenduduk.php?nik=<?=hash('sha256', openssl_decrypt( $data['nik'],$chiperAlgo, $keyAes, $options,$ivAes ))?>" style="text-decoration:none">
+            <a href="halamanLihatDataAdmin.php?nik=<?=hash('sha256', openssl_decrypt( $admin['nik'],$chiperAlgo, $keyAes, $options,$ivAes ))?>" style="text-decoration:none">
             <button type="button" class="btn btn-outline-primary">Lihat</button>
             </a>
-            <a href="halamanEditDataPenduduk.php?nik=<?=hash('sha256', openssl_decrypt( $data['nik'],$chiperAlgo, $keyAes, $options,$ivAes ))?>" style="text-decoration:none">
+            <a href="halamanEditDataAdmin.php?nik=<?=hash('sha256', openssl_decrypt( $admin['nik'],$chiperAlgo, $keyAes, $options,$ivAes ))?>" style="text-decoration:none">
              <button type="button" class="btn btn-outline-warning">Edit</button>
              </a>
           <?php 
-           $nik_cek = openssl_decrypt( $data['nik'],$chiperAlgo, $keyAes, $options,$ivAes );
+           $nik_cek = openssl_decrypt( $admin['nik'],$chiperAlgo, $keyAes, $options,$ivAes );
            $x = "SELECT * FROM penduduk JOIN admin ON penduduk.nik = admin.nik WHERE penduduk.nik = '$nik_cek'";
            $cek = mysqli_query($conn, $x);
            if(mysqli_fetch_assoc($cek) === NULL){    
           ?>
-             <a href="hapusDataPenduduk.php?nik=<?= hash('sha256', openssl_decrypt( $data['nik'],$chiperAlgo, $keyAes, $options,$ivAes ))?>" style="text-decoration:none" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+             <a href="hapusDataPenduduk.php?nik=<?= hash('sha256', openssl_decrypt( $admin['nik'],$chiperAlgo, $keyAes, $options,$ivAes ))?>" style="text-decoration:none" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
              <button type="button" class="btn btn-outline-danger">Hapus</button>
              </a>
           <?php }else{ ?>

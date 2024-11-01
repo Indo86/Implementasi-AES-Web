@@ -46,7 +46,7 @@ if(!isset($_SESSION["loginA"])){
 <nav class="navbar bg-primary shadow fixed-top">
   <div class="container">
   <a class="navbar-brand">
-    <img src="img/konoha2.png" alt="Bootstrap" width="50" height="50">
+    <img src="Assets/Img/konoha2.png" alt="Bootstrap" width="50" height="50">
 
     
       
@@ -92,7 +92,7 @@ if(!isset($_SESSION["loginA"])){
 <div class="row">
   <div class="col-3">
       <div class="card shadow-sm" style="width: 20rem;">
-      <img src="Assets/Img/<?= $admin['gambar']; ?>" class="card-img-top" alt="...">
+      <img src="Assets/Img/<?= openssl_decrypt(  $data['gambar'],$chiperAlgo, $keyAes, $options,$ivAes )  ?>" class="card-img-top" alt="...">
       <div class="card-body">
       <div class="row">
          <div class="col-4">
@@ -133,18 +133,18 @@ if(!isset($_SESSION["loginA"])){
         <p class="fw-bold">Gol Darah</p>
        </div>
        <div class="col-7">
-        <p class="fw">: <?= $admin['nik']; ?></p>
-        <p class="fw">: <?= $admin['nama']; ?></p>
-        <p class="fw">: <?= $admin['ttl']; ?></p>
-        <p class="fw">: <?= $admin['jenis_kelamin']; ?></p>
-        <p class="fw">: <?= $admin['alamat']; ?></p>
-        <p class="fw">: <?= $admin['rtrw']; ?></p>
-        <p class="fw">: <?= $admin['keldesa']; ?></p>
-        <p class="fw">: <?= $admin['kecamatan']; ?></p>
-        <p class="fw">: <?= $admin['status_perkawinan']; ?></p>
-        <p class="fw">: <?= $admin['pekerjaan']; ?></p>
-        <p class="fw">: <?= $admin['kewarganegaraan']; ?></p>
-        <p class="fw">: <?= $admin['golD']; ?></p>
+       <p class="fw">: <?= openssl_decrypt( $admin['nik'],$chiperAlgo, $keyAes, $options,$ivAes )   ?></p>
+              <p class="fw">: <?= openssl_decrypt($admin['nama'],$chiperAlgo, $keyAes, $options,$ivAes ) ?></p>
+              <p class="fw">: <?= openssl_decrypt( $admin['ttl'],$chiperAlgo, $keyAes, $options,$ivAes )  ?></p>
+              <p class="fw">: <?= openssl_decrypt( $admin['jenis_kelamin'],$chiperAlgo, $keyAes, $options,$ivAes ) ?></p>
+              <p class="fw">: <?= openssl_decrypt( $admin['alamat'],$chiperAlgo, $keyAes, $options,$ivAes ) ?></p>
+              <p class="fw">: <?= openssl_decrypt( $admin['rtrw'] ,$chiperAlgo, $keyAes, $options,$ivAes ) ?></p>
+              <p class="fw">: <?= openssl_decrypt( $admin['keldesa'] ,$chiperAlgo, $keyAes, $options,$ivAes ) ?></p>
+              <p class="fw">: <?= openssl_decrypt( $admin['kecamatan'] ,$chiperAlgo, $keyAes, $options,$ivAes )  ?></p>
+              <p class="fw">: <?= openssl_decrypt( $admin['status_perkawinan'] ,$chiperAlgo, $keyAes, $options,$ivAes ) ?></p>
+              <p class="fw">: <?= openssl_decrypt( $admin['pekerjaan'] ,$chiperAlgo, $keyAes, $options,$ivAes )  ?></p>
+              <p class="fw">: <?= openssl_decrypt( $admin['kewarganegaraan'] ,$chiperAlgo, $keyAes, $options,$ivAes )  ?></p>
+              <p class="fw">: <?= openssl_decrypt( $admin['golD'] ,$chiperAlgo, $keyAes, $options,$ivAes )  ?></p>
        </div>
 
        </div>
