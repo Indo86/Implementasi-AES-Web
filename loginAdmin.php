@@ -91,9 +91,6 @@ if(isset($_POST["loginA"])){
   <form action="" method="post">
   <div class="container py-5 h-100 ">
     <div class="row d-flex justify-content-center align-items-center h-100 ">
-    
-        
-     
       <div class="col-lg-6 mb-5 mb-lg-0">
       <div class="row">
       <a href="home.php">
@@ -150,7 +147,7 @@ if(isset($_POST["loginA"])){
   </div>
  </form>
 </section>
-  
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
 </html>
