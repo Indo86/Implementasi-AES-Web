@@ -1,0 +1,22 @@
+NIP: 3171023400014568
+NIK: 317102340002
+Nama: Andi Saputra
+Jabatan: Admin
+Password: 123456
+
+======================
+NIP: 9828107619119332	
+NIK: 317102340004	
+Nama: Ratna Sari	
+Pekerjaan: Admin Desa
+Password: ratna123
+
+======================
+NIP: 123924784532782398
+NIK: 317102340009
+Nama: Indah Permatasari	
+Jenis Kelamin:Perempuan	
+ALamat: Celuluk
+Pekerjaan: Admin Desa
+Password: indah123
+======================
